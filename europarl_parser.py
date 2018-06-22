@@ -24,7 +24,7 @@ def parse_file(file):
 
 
 if __name__ == "__main__":
-    languages = ['English', 'German', 'French', 'Italian', 'Spanish']
-    for language in languages:
-        file_path = os.path.join('data', 'raw', '{}.txt'.format(language))
+    raw_dir = os.path.join('data', 'raw')
+    for file in os.listdir(raw_dir):
+        file_path = os.path.join('data', 'raw', file)
         parse_file(file_path)

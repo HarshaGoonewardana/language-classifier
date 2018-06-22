@@ -31,7 +31,6 @@ def assemble_data(data_glob):
     category_lines = {}
     all_categories = []
     for file in find_files(data_glob):
-        print(file)
         category = os.path.basename(file).split('.')[0]
         all_categories.append(category)
         lines = read_lines(file)
