@@ -27,14 +27,15 @@ def read_lines(filename):
     return lines
 
 
-def assemble_data(data_glob):
+def assemble_data(data_glob, n=50000):
     category_lines = {}
     all_categories = []
     for file in find_files(data_glob):
         category = os.path.basename(file).split('.')[0]
         all_categories.append(category)
         lines = read_lines(file)
-        category_lines[category] = lines
+        random.shuffle(lines)
+        category_lines[category] = lines[:n] if n < len(lines) else lines
 
     return category_lines, all_categories
 

@@ -7,12 +7,13 @@ The model uses data from the [European Parliament Proceedings Parallel Corpus](h
 The corpora are segmented by word, and the model uses only one instance of each unique word, per language.
 
 Current Languages included are:
-- English
-- German
-- French
-- Spanish
-- Italian
+- Bulgarian
+- Czech
 - Dutch
-- Swedish
+- English
+- French
+- German
+- Italian
 - Polish
-
+- Spanish
+- Swedish

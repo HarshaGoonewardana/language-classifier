@@ -25,6 +25,8 @@ def parse_file(file):
 
 if __name__ == "__main__":
     raw_dir = os.path.join('data', 'raw')
+    processed_dir = os.path.join('data', 'languages')
     for file in os.listdir(raw_dir):
-        file_path = os.path.join('data', 'raw', file)
-        parse_file(file_path)
+        if file not in os.listdir(processed_dir):
+            file_path = os.path.join('data', 'raw', file)
+            parse_file(file_path)

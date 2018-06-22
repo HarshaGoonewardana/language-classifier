@@ -1,5 +1,3 @@
-#!/usr/bin/env python36
-
 import argparse
 
 import torch
