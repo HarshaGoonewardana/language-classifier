@@ -1,3 +1,4 @@
+import os
 import argparse
 
 import torch
@@ -10,7 +11,8 @@ from utils import *
 from models import RNN
 
 
-N_ITERS = 100000
+DATA_FILES = os.path.join('data', 'languages', '*.txt')
+N_ITERS = 1000000
 
 
 def train(model, criterion, category_tensor, line_tensor, lr=0.005):
@@ -48,7 +50,7 @@ if __name__ == "__main__":
 
     current_loss = 0.
     all_losses = []
-    desc = 'Loss: %.4f | Name: %s  [%s] %s'
+    desc = 'Loss: %.4f | Word: %s  Predicted Language: %s %s'
     pbar = trange(N_ITERS, desc=desc, unit=' names', initial=1)
     for i in pbar:
         category, line, category_tensor, line_tensor = random_training_example(category_lines)
@@ -62,7 +64,7 @@ if __name__ == "__main__":
             all_losses.append(current_loss/1000)
             current_loss = 0.
 
-    torch.save(rnn, 'checkpoints/name-nationality-classification.pth')
+    torch.save(rnn, 'checkpoints/language-classifier.pth')
 
     plt.figure()
     plt.plot(all_losses)

@@ -15,7 +15,8 @@ def parse_file(file):
             if word:
                 out.append(word)
 
-    out_file = os.path.join('data', 'clean', os.path.basename(file))
+    out = set(out)
+    out_file = os.path.join('data', 'languages', os.path.basename(file))
     with open(out_file, 'w') as f:
         pbar2 = tqdm(out, unit=" word", desc="Writing {}".format(out_file))
         for word in pbar2:

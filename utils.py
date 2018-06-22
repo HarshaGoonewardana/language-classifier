@@ -9,9 +9,6 @@ import random
 import torch
 
 
-DATA_FILES = os.path.join('data', 'names', '*.txt')  # not sure if good w/ glob
-
-
 def find_files(path):
     return glob.glob(path)
 
@@ -30,13 +27,14 @@ def read_lines(filename):
     return lines
 
 
-def assemble_data(data_dir):
+def assemble_data(data_glob):
     category_lines = {}
     all_categories = []
-    for filename in find_files(data_dir):
-        category = os.path.basename(filename).split('.')[0]
+    for file in find_files(data_glob):
+        print(file)
+        category = os.path.basename(file).split('.')[0]
         all_categories.append(category)
-        lines = read_lines(filename)
+        lines = read_lines(file)
         category_lines[category] = lines
 
     return category_lines, all_categories
@@ -91,12 +89,3 @@ def evaluate(line_tensor, model):
         output, hidden = model.forward(line_tensor[i], hidden)
 
     return output
-
-
-if __name__ == "__main__":
-    print(find_files('data/names/*.txt'))
-    print(unicode_to_ascii('Ślusàrski'))
-    n_letters = len(string.ascii_letters + ".,;")
-    category_lines, all_categories = assemble_data(DATA_FILES)
-    n_categories = len(all_categories)
-    print(category_lines)
