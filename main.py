@@ -10,9 +10,13 @@ import matplotlib.ticker as ticker
 from utils import *
 from models import RNN
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-niters', type=int, default=100000, help="number of iterations to run")
+args = parser.parse_args()
+
 
 DATA_FILES = os.path.join('data', 'languages', '*.txt')
-N_ITERS = 100000
+N_ITERS = args.niters
 
 
 def train(model, criterion, category_tensor, line_tensor, lr=0.005):
@@ -43,7 +47,7 @@ if __name__ == "__main__":
     category_lines, all_categories = assemble_data(DATA_FILES)
     n_categories = len(all_categories)
     n_hidden = 128
-    n_letters = len(string.ascii_letters + ",.;")
+    n_letters = len(string.ascii_letters)
 
     rnn = RNN(n_letters, n_hidden, n_categories)
     criterion = nn.NLLLoss()
@@ -59,18 +63,20 @@ if __name__ == "__main__":
         guess_i = category_from_output(output)
         guess = all_categories[guess_i]
         correct = '✓' if guess == category else '✗ (%s)' % category
-        if i % 1000 == 0 and i != 0:
+        if i % 500 == 0 and i != 0:
             pbar.set_description(desc % (loss, line, guess, correct))
-            all_losses.append(current_loss/1000)
+            all_losses.append(current_loss/500)
             current_loss = 0.
 
     torch.save(rnn, 'checkpoints/language-classifier.pth')
 
     plt.figure()
     plt.plot(all_losses)
+    plt.title("Loss")
+    plt.savefig('results/loss.png')
 
     confusion = torch.zeros(n_categories, n_categories)
-    n_confusion = 10000
+    n_confusion = 20000
 
     for j in range(n_confusion):
         category, line, category_tensor, line_tensor = random_training_example(category_lines)
@@ -98,6 +104,4 @@ if __name__ == "__main__":
     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
 
     # sphinx_gallery_thumbnail_number = 2
-    plt.show()
-
-
+    plt.savefig('results/confusion_matrix.png')

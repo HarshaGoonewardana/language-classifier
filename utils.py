@@ -47,13 +47,13 @@ def category_from_output(output):
     return category_i
 
 def letter_to_index(letter):
-    all_letters = string.ascii_letters + '.,;'
+    all_letters = string.ascii_letters
 
     return all_letters.find(letter)
 
 
 def letter_to_tensor(letter):
-    n_letters = len(string.ascii_letters + '.,;')
+    n_letters = len(string.ascii_letters)
     tensor = torch.zeros(1, n_letters)
     tensor[0][letter_to_index(letter)] = 1
 
@@ -61,7 +61,7 @@ def letter_to_tensor(letter):
 
 
 def line_to_tensor(line):
-    n_letters = len(string.ascii_letters + '.,;')
+    n_letters = len(string.ascii_letters)
     tensor = torch.zeros(len(line), 1, n_letters)
     for li, letter in enumerate(line):
         tensor[li][0][letter_to_index(letter)] = 1
@@ -77,7 +77,10 @@ def random_training_example(data):
     all_categories = list(data.keys())
     category = random_choice(all_categories)
     line = random_choice(data[category])
-    category_tensor = torch.tensor([all_categories.index(category)], dtype=torch.long)
+    category_tensor = torch.tensor(
+        [all_categories.index(category)],
+        dtype=torch.long
+    )
     line_tensor = line_to_tensor(line)
 
     return category, line, category_tensor, line_tensor
